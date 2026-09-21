@@ -12,7 +12,7 @@ Scaffold the per-repo configuration that the engineering skills assume:
 - **Triage labels**: the strings used for the five canonical triage roles
 - **Domain docs**: where `CONTEXT.md` and ADRs live, and the consumer rules for reading them
 - **Scope limits**: proportionate fixes and verification without suppressing reachable defects or required project checks
-- **Performance experiments**: a fixed code, results, illustrations, tests, and provenance layout under `experiments/`
+- **Performance experiments**: choose a new or existing experiment directory, with a fixed code, results, illustrations, tests, logs, and provenance layout under `experiments/`
 - **Task tracking**: a root `TODO.md` ledger for current tasks, priority, and development progress
 
 This is a prompt-driven skill, not a deterministic script. Explore, present what you found, confirm with the user, then write.
@@ -100,9 +100,10 @@ Resolve every project-specific slot in the scope-limits seed; never show or writ
 ```gitignore
 experiments/*/numerical_results/
 experiments/*/illustrations/
+experiments/*/log/
 ```
 
-Verify that the target root is a Git working tree, both local identity values match the confirmation, root `src/` and `.gitignore` exist, and `git check-ignore -v --no-index` matches representative paths under both ignored experiment-output directories.
+Verify that the target root is a Git working tree, both local identity values match the confirmation, root `src/` and `.gitignore` exist, and `git check-ignore -v --no-index` matches representative paths under all three ignored experiment-output directories.
 
 **Edit `AGENTS.md`:**
 
@@ -119,7 +120,7 @@ The block:
 
 ### Performance experiments
 
-Before creating, naming, or reorganizing a performance experiment, follow `docs/agents/experiments.md`.
+When the user intends to develop, run, debug, or reorganize an experiment, follow `docs/agents/experiments.md` to establish the new or existing experiment directory before starting work.
 
 ### Issue tracker
 
