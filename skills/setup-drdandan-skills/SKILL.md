@@ -14,7 +14,7 @@ Scaffold the per-repo configuration that the engineering skills assume:
 - **Scope limits**: proportionate fixes and verification without suppressing reachable defects or required project checks
 - **Performance experiments**: choose a new or existing experiment directory, with a fixed code, results, illustrations, tests, logs, and provenance layout under `experiments/`
 - **Task tracking**: a root `TODO.md` ledger for current tasks, priority, and development progress
-- **Feishu ticket transfer**: local sync conventions for the paired `feishu-push-tickets` and `feishu-pull-tickets` skills; bind the remote project only when first used
+- **Feishu ticket transfer**: local sync conventions for the paired `lark-push-tickets` and `lark-pull-tickets` skills; bind the remote project only when first used
 
 This is a prompt-driven skill, not a deterministic script. Explore, present what you found, confirm with the user, then write.
 
@@ -141,7 +141,7 @@ When the user intends to develop, run, debug, or reorganize an experiment, follo
 
 ### Feishu ticket transfer
 
-When uploading project tickets to Feishu, use `feishu-push-tickets`; when importing them, use `feishu-pull-tickets`. Read `docs/agents/feishu-sync.md` for the project binding, HITL selection, dependency and conflict rules.
+When uploading project tickets to Feishu, use `lark-push-tickets`; when importing them, use `lark-pull-tickets`. Read `docs/agents/feishu-sync.md` for the project binding, HITL selection, dependency and conflict rules.
 
 ### Task tracking
 

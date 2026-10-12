@@ -15,7 +15,7 @@ issue tracking, triage labels, domain documentation, and `TODO.md`.
 - Rules for reading domain context and architecture decision records (ADRs).
 - A root `TODO.md` ledger for task priority and progress.
 - Experiment directory selection, file placement, logs, and figure provenance.
-- Feishu ticket-transfer conventions and an initially unbound mother-document configuration for the paired `feishu-push-tickets` / `feishu-pull-tickets` skills.
+- Feishu ticket-transfer conventions and an initially unbound mother-document configuration for the paired `lark-push-tickets` / `lark-pull-tickets` skills.
 
 Before experiment development, execution, debugging, or reorganization, the
 generated guidance asks whether to create a directory or reuse an existing one

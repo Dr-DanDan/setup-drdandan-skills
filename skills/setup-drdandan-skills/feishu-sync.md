@@ -1,6 +1,6 @@
 # Feishu ticket sync
 
-Project tickets can be transferred with `feishu-push-tickets` / `feishu-pull-tickets`, installed together. The issue tracker and local engineering configuration remain owned by setup.
+Project tickets can be transferred with `lark-push-tickets` / `lark-pull-tickets`, installed together. The issue tracker and local engineering configuration remain owned by setup.
 
 ```json
 {
