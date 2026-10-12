@@ -14,6 +14,7 @@ Scaffold the per-repo configuration that the engineering skills assume:
 - **Scope limits**: proportionate fixes and verification without suppressing reachable defects or required project checks
 - **Performance experiments**: choose a new or existing experiment directory, with a fixed code, results, illustrations, tests, logs, and provenance layout under `experiments/`
 - **Task tracking**: a root `TODO.md` ledger for current tasks, priority, and development progress
+- **Feishu ticket transfer**: local sync conventions for the paired `feishu-push-tickets` and `feishu-pull-tickets` skills; bind the remote project only when first used
 
 This is a prompt-driven skill, not a deterministic script. Explore, present what you found, confirm with the user, then write.
 
@@ -33,7 +34,8 @@ Look at the current repo to understand its starting state. Read whatever exists;
 - `docs/adr/` and any `src/*/docs/adr/` directories
 - `docs/agents/`: does this skill's prior output already exist?
 - `TODO.md`: does a task ledger already exist, and which priority or progress vocabulary does it use?
-- `.scratch/`: a sign that a local-markdown issue tracker convention is already in use
+- `.scratch/`: inspect existing specs/issues for a local-markdown tracker convention; `.scratch/.feishu-sync/` is only transfer state and does not select the tracker
+- `docs/agents/feishu-sync.md`: preserve any existing project binding and setup-declared context paths; do not require Feishu login during setup
 - Is the `triage` skill installed? (a `triage` skill folder alongside this one, or `triage` in your available skills.) This decides whether Section C runs at all.
 - Monorepo signals: a `pnpm-workspace.yaml`, a `workspaces` field in `package.json`, or a populated `packages/*` with its own `src/`. These are present only in a genuinely large multi-package repo; their absence means single-context, which is almost every repo.
 
@@ -84,7 +86,7 @@ Show the user a draft of:
 - The `## Scope limits` block, adapted from [scope-limits.md](./scope-limits.md) to the repository facts found in step 1
 - The `## Agent skills` block to add to root `AGENTS.md`
 - The root `TODO.md`, preserving existing tasks and conventions when present
-- The contents of `docs/agents/experiments.md`, `docs/agents/issue-tracker.md`, `docs/agents/domain.md`, and `docs/agents/triage-labels.md` (the last only when `triage` is installed)
+- The contents of `docs/agents/experiments.md`, `docs/agents/issue-tracker.md`, `docs/agents/domain.md`, `docs/agents/feishu-sync.md`, and `docs/agents/triage-labels.md` (the last only when `triage` is installed)
 
 Resolve every project-specific slot in the scope-limits seed; never show or write literal placeholders. State any inferred operator model or preserved project contract in the draft so the user can correct it. Let them edit before writing.
 
@@ -100,12 +102,15 @@ Resolve every project-specific slot in the scope-limits seed; never show or writ
 ```gitignore
 experiments/*/numerical_results/
 experiments/*/illustrations/
+.scratch/.feishu-sync/
 experiments/*/log/
 ```
 
 Verify that the target root is a Git working tree, both local identity values match the confirmation, root `src/` and `.gitignore` exist, and `git check-ignore -v --no-index` matches representative paths under all three ignored experiment-output directories.
 
 **Edit `AGENTS.md`:**
+
+Also verify that `git check-ignore -v --no-index` matches `.scratch/.feishu-sync/state.json`. This cache rule does not ignore ordinary `.scratch/` tickets.
 
 - Update root `AGENTS.md` when it exists; otherwise create it.
 
@@ -134,6 +139,10 @@ When the user intends to develop, run, debug, or reorganize an experiment, follo
 
 [one-line summary of layout: "single-context" or "multi-context"]. See `docs/agents/domain.md`.
 
+### Feishu ticket transfer
+
+When uploading project tickets to Feishu, use `feishu-push-tickets`; when importing them, use `feishu-pull-tickets`. Read `docs/agents/feishu-sync.md` for the project binding, HITL selection, dependency and conflict rules.
+
 ### Task tracking
 
 Use the root `TODO.md` as the current-work ledger. Record each active task's priority and development progress, and update it when its state changes.
@@ -151,11 +160,16 @@ Then write the docs files using the seed templates in this skill folder as a sta
 - [triage-labels.md](./triage-labels.md): label mapping (only if `triage` is installed)
 - [domain.md](./domain.md): domain doc consumer rules + layout
 - [todo.md](./todo.md): root `TODO.md` task-ledger template
+- [feishu-sync.md](./feishu-sync.md): paired ticket-transfer conventions and initially unbound Feishu project configuration
+
+Create `docs/agents/feishu-sync.md` from its seed when absent. When it exists, preserve its binding and user edits while adding missing transfer rules. For a multi-context layout, record only the `src/<context>/CONTEXT.md` paths already established by the domain configuration in its `context_paths` list. Do not change the issue tracker, create Feishu resources, or request remote authentication during setup.
 
 For "other" issue trackers, write `docs/agents/issue-tracker.md` from scratch using the user's description.
 
 Create `TODO.md` at the repository root from [todo.md](./todo.md). If it already exists, preserve its tasks and local conventions while ensuring each active task records its priority and progress. Populate it with active work found during exploration or supplied by the user; don't invent tasks when none are known.
 
 ### 5. Done
+
+Identify `docs/agents/feishu-sync.md` as the paired transfer skills' configuration. Its remote project can remain unbound until their first invocation. Both transfer skills must be installed together; setup does not install them automatically.
 
 Tell the user the setup is complete, whether Git was initialized, which repository-local Git identity was configured, and whether root `src/` and `.gitignore` were created or updated. State that root `AGENTS.md` received `## Scope limits` and the `TODO.md` maintenance rule, and identify `TODO.md` as the current-work ledger and `docs/agents/experiments.md` as the experiment-layout source of truth. Say which engineering skills will now read from the generated files. Mention they can edit `TODO.md` and `docs/agents/*.md` directly later; re-running this skill is only necessary if they want to switch issue trackers or restart from scratch.
