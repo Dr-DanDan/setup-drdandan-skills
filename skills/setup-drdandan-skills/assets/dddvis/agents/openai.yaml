@@ -1,0 +1,5 @@
+interface:
+  display_name: "DDDvis"
+  short_description: "Publish selected reports to the project website"
+policy:
+  allow_implicit_invocation: false
