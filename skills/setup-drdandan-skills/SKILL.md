@@ -15,7 +15,7 @@ Scaffold the per-repo configuration that the engineering skills assume:
 - **Performance experiments**: choose a new or existing experiment directory, with a fixed code, results, illustrations, tests, logs, and provenance layout under `experiments/`
 - **Task tracking**: a root `TODO.md` ledger for current tasks, priority, and development progress
 - **Feishu ticket transfer**: local sync conventions for the paired `lark-push-tickets` and `lark-pull-tickets` skills; bind the remote project only when first used
-- **DDDvis website reports (optional)**: a project skill and binding to an existing shared preview service, with the current URL read from service-owned state
+- **DDDvis report portal (optional)**: a project skill and binding to a shared LAN report service, with the current URL read from service-owned state
 
 This is a prompt-driven skill, not a deterministic script. Explore, present what you found, confirm with the user, then write.
 
@@ -37,7 +37,7 @@ Look at the current repo to understand its starting state. Read whatever exists;
 - `TODO.md`: does a task ledger already exist, and which priority or progress vocabulary does it use?
 - `.scratch/`: inspect existing specs/issues for a local-markdown tracker convention; `.scratch/.feishu-sync/` is only transfer state and does not select the tracker
 - `docs/agents/feishu-sync.md`: preserve any existing project binding and setup-declared context paths; do not require Feishu login during setup
-- `.agents/skills/dddvis/`, `docs/agents/dddvis.md`, and any existing DDDvis entry in `AGENTS.md`: inspect prior binding and user edits. If website publishing is requested or already configured, read the referenced service configuration to identify its publisher, project registry, current-entry record, and supported report/recovery capabilities. Setup does not need credentials or a new tunnel.
+- `.agents/skills/dddvis/`, `docs/agents/dddvis.md`, and any existing DDDvis entry in `AGENTS.md`: inspect prior binding and user edits. When DDDvis is selected or configured, read the referenced service configuration for its access model, publisher, project registry, current-entry record, authentication, static-resource support, and background-service controls. Distinguish the requested configuration from the deployed capabilities; obtain project identifiers, addresses and paths from that project's records.
 - Is the `triage` skill installed? (a `triage` skill folder alongside this one, or `triage` in your available skills.) This decides whether Section C runs at all.
 - Monorepo signals: a `pnpm-workspace.yaml`, a `workspaces` field in `package.json`, or a populated `packages/*` with its own `src/`. These are present only in a genuinely large multi-package repo; their absence means single-context, which is almost every repo.
 
@@ -80,9 +80,11 @@ The defaults are the five canonical roles, each label string equal to its name: 
 
 Offer **multi-context** (a root `CONTEXT-MAP.md` pointing to per-context `CONTEXT.md` files) only when exploration found monorepo signals. Then confirm which layout they want.
 
-**Section E: DDDvis website reports (optional).** Preserve an existing choice or one already authorized in this task. Otherwise ask whether to bind this project to an existing shared preview service; recommend binding when the user wants browser reports, and leave it off when they do not. If declined, add no DDDvis files or routing and leave any existing configuration intact.
+**Section E: DDDvis report portal (optional).** Preserve an existing choice or one already authorized in this task. For a new binding, recommend a password-protected shared LAN portal when the user wants browser reports, and leave it off when they do not. If declined, add no DDDvis files or routing and leave existing configuration intact.
 
-For a selected binding, use [dddvis.md](./dddvis.md). Resolve the project identifier and stable service-configuration path from existing records; ask only for missing information. A temporary URL is not a service binding. If no service is available, the project may be prepared as unbound, but report that publication and recovery are unavailable until a service is provisioned separately. Creating a tunnel or enabling a watchdog is outside setup.
+For a selected binding, use [dddvis.md](./dddvis.md) for publication, access, lifecycle and migration rules. Resolve the project identifier and stable service-configuration path from existing records; ask only for missing information. A browser URL is an entry point, not a service binding. Keep deployment addresses, report names, source directories and entry files specific to the selected project; do not copy values from another project into the reusable templates.
+
+If no service is available, prepare an explicitly unbound configuration and report the missing capabilities. If the user selects LAN access for an existing public service, record migration as pending until the LAN portal and reports pass acceptance. Setup writes project guidance and binds a supported service; provisioning, migrating, enabling recovery or stopping a legacy service requires a separate implementation task.
 
 ### 3. Confirm and edit
 
@@ -176,7 +178,7 @@ Then write the docs files using the seed templates in this skill folder as a sta
 - [domain.md](./domain.md): domain doc consumer rules + layout
 - [todo.md](./todo.md): root `TODO.md` task-ledger template
 - [feishu-sync.md](./feishu-sync.md): paired ticket-transfer conventions and initially unbound Feishu project configuration
-- [dddvis.md](./dddvis.md): optional project publishing binding and shared-service contract; only write when Section E selected it
+- [dddvis.md](./dddvis.md): optional LAN report-portal binding and publication contract; only write when Section E selected it
 
 Create `docs/agents/feishu-sync.md` from its seed when absent. When it exists, preserve its binding and user edits while adding missing transfer rules. For a multi-context layout, record only the `src/<context>/CONTEXT.md` paths already established by the domain configuration in its `context_paths` list. Do not change the issue tracker, create Feishu resources, or request remote authentication during setup.
 
@@ -186,15 +188,15 @@ Create `TODO.md` at the repository root from [todo.md](./todo.md). If it already
 
 **Bind DDDvis only when selected:**
 
-- Create `docs/agents/dddvis.md` from its seed, filling the known project identifier and service-configuration path. Retain `null` only for an explicitly unbound setup. Preserve existing bindings and user edits on reruns; reconcile a conflicting binding before changing it.
+- Create `docs/agents/dddvis.md` from its seed, filling the known project identifier and service-configuration path. Retain `null` only for an explicitly unbound setup. Preserve existing bindings and user edits on reruns; reconcile a conflicting binding before changing it. Record requested changes and missing service capabilities as pending rather than describing them as deployed.
 - Copy [assets/dddvis/SKILL.md](./assets/dddvis/SKILL.md) and [assets/dddvis/agents/openai.yaml](./assets/dddvis/agents/openai.yaml) into `.agents/skills/dddvis/`, retaining that directory structure. Merge missing instructions when these files already exist. Preserve the explicit-only invocation policy and keep the entire skill self-contained through its project-doc pointer.
 - Reuse the bound service's project registration interface, if available, to add only this project. A registry entry is a directory label, not permission to publish its files. If registration cannot be verified, report it as pending rather than editing an unknown registry format.
-- Verify the project skill, invocation policy, binding pointer, and single AGENTS route. Inspect service-owned records for actual capabilities and status; writing a recovery contract does not install or verify a recovery program. Keep passwords, live URLs and runtime records out of project files.
+- Verify the project skill, invocation policy, binding pointer, and single AGENTS route. Inspect service-owned records for actual publication, static-resource, authentication, current-entry and background-service capabilities. Keep passwords, live URLs and runtime records in service storage; the project document points to that storage through its binding.
 
 ### 5. Done
 
 Identify `docs/agents/feishu-sync.md` as the paired transfer skills' configuration. Its remote project can remain unbound until their first invocation. Both transfer skills must be installed together; setup does not install them automatically.
 
-If DDDvis was selected, identify its project skill and binding, and report whether publication, static-resource bundles, and independent recovery are actually supported by the bound service. Return a current URL only when fresh service evidence confirms it; otherwise name the pending capability. Explain that tunnel recreation can change the hostname and that old chat links and browser bookmarks will not update automatically.
+If DDDvis was selected, identify its project skill and binding. Report binding completion separately from the service's actual publication, static-resource, authentication and background-service capabilities. Return a current portal URL only when fresh evidence supports the configured access model; otherwise identify the missing capability or pending migration. Read the address from the bound service's current-entry record. An address change does not update existing bookmarks automatically.
 
 Tell the user the setup is complete, whether Git was initialized, which repository-local Git identity was configured, and whether root `src/` and `.gitignore` were created or updated. State that root `AGENTS.md` received `## Scope limits` and the `TODO.md` maintenance rule, and identify `TODO.md` as the current-work ledger and `docs/agents/experiments.md` as the experiment-layout source of truth. Say which engineering skills will now read from the generated files. They can edit `TODO.md` and `docs/agents/*.md` later, or rerun setup to change project conventions or bindings; ordinary DDDvis publication does not rerun setup.

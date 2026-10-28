@@ -1,6 +1,6 @@
-# DDDvis website reports
+# DDDvis report portal
 
-`DDDvis` is the explicit conversation command for generating or publishing a selected report to this project's shared preview service. Ordinary HTML generation and `visualize` do not publish. Follow-up corrections to the same authorized publication retain that authorization.
+`DDDvis` is the explicit conversation command for generating or publishing a selected report to the project's bound portal. Ordinary HTML generation and `visualize` do not publish. Follow-up corrections to the same authorized report retain that authorization.
 
 ## Project binding
 
@@ -11,40 +11,44 @@
 }
 ```
 
-Setup fills `project_id` with the identifier used by the existing service's project registry and `service_config` with the stable absolute path to its local configuration or runbook. Preserve an existing binding; two null fields mean deliberately unbound, not a working deployment.
+Setup fills `project_id` from the service's project registry and `service_config` with the stable absolute path to its configuration or runbook. Preserve existing bindings and confirmed access choices. For new bindings, use a password-protected shared LAN portal. Two null fields mean deliberately unbound, not a working deployment.
 
-The service configuration supplies its actual publishing interface, project registry, current-entry/status record locations, and stop/resume controls. Resolve these from that file rather than inventing command flags or inferring a URL from old logs. Credentials and runtime records remain in private service storage, outside the repository and published directory. A project binding is not permission to publish every file under its root.
+The bound configuration supplies the publisher, project registry, access model, current-entry and status records, and stop/resume controls. Resolve deployment addresses, ports and paths there. Report source directories, entry files and resource sets come from the selected report. These values belong to each deployment and project, not to the reusable skill template.
+
+Credentials and runtime records remain in private service storage, outside the repository and published directory. A project registration labels its reports; it does not authorize publication of every file under the project root.
 
 ## Report publication
 
-- Generate HTML from results already available in the task, or publish a specified existing report. If required experiment results are missing, report the dependency; publication does not start a new experiment.
-- Prefer self-contained HTML for new reports. Existing static report directories may include their entry HTML and required JS, CSS, images and display data. Use an explicit export directory, preserving relative paths; applications requiring a persistent backend are outside this workflow.
-- Preserve original project artifacts and their provenance. Publish only the selected report and its resources; repository roots, source-data roots and credential directories are not website roots.
-- Keep a report's path when updating its website copy. Add distinct reports under their own project/experiment; reports with the same name in different projects must not overwrite one another. Preserve existing report links and concurrent publishers' directory entries.
-- The website holds the current published copy, not an additional history archive. Failed publication preserves the previous usable copy and does not serve staging files.
+- Generate a report from available results, or publish the selected existing report. Missing results are a dependency; publication does not start an experiment or another computation.
+- Publish a display copy only on an explicit DDDvis request. Later source changes do not alter that copy; an explicit update replaces the current version at the same report path.
+- Support a self-contained HTML file or an explicit static export directory with a declared entry file. Include the required scripts, styles, images, display data and downloadable files, preserving relative paths and existing interactions. Serve required resources through the portal so viewing does not depend on external assets.
+- Preserve source artifacts and their provenance. Export only the selected report and its resources; repository roots, source-data roots and credential directories are not publication roots.
+- Organize reports by project and the project's report group, such as an experiment when one exists. Preserve existing navigation and report identities. Same-named reports in different projects must not overwrite one another.
+- Keep the current published copy rather than an extra history archive. Failed publication retains the previous usable copy and does not expose staging files or overwrite concurrent publishers' entries.
+- Apply the service's password protection to the homepage, reports, static resources and downloads. Reuse existing login information; publishing a report does not rotate credentials.
 
-Use the bound service's supported operations. When its publisher lacks directory support or another required capability, report the exact missing capability rather than dropping resources or claiming the contract is implemented.
+Use the service's supported publisher. If directory publication or another required capability is missing, report the gap rather than omit resources or claim completion. Applications that require a persistent backend need a separate hosting workflow.
 
 ## Current entry and delivery
 
-The service owns one current-entry record with the public base URL, availability and check time. Read it for each delivery and combine the verified current base URL with the report path. A local process or readiness endpoint alone does not prove public availability. Mark stale or failed public checks as unavailable instead of presenting an old URL as working.
+The service owns a current-entry record containing the configured base URL, availability and check time. For the default LAN portal, this is its LAN address. For each delivery, read the record and combine the verified base URL with the report path. An active process or local health endpoint alone does not establish a usable report.
+
+Acceptance checks cover the browser entry, navigation, report interactions and required resources/downloads over the configured address. For the default password-protected portal, anonymous and incorrect-password requests must not read protected content; authenticated requests must retrieve the required content completely. Keep access from the checked network distinct from unverified access elsewhere. Mark stale or failed access evidence as unavailable.
 
 Report one of these outcomes:
 
-- **Accessible:** publication and necessary resources are ready, authentication/access checks passed, and the current report link is available.
-- **Copied, temporarily unavailable:** the website copy exists, but the public entry failed its check or is recovering; give the status/record location without claiming accessibility.
-- **Not published:** generation, resource preparation or copying failed; state the cause and retain the original and previous usable copy.
+- **Accessible:** the report and necessary resources are published, authentication and access checks passed, and the current report URL is verified.
+- **Copied, temporarily unavailable:** the display copy exists, but entry or access checks failed; provide the status record without presenting the URL as working.
+- **Not published:** preparation or publication failed; state the cause and retain the original and previous usable copy.
 
-After tunnel recreation, validate the new entry before marking it available. Historical chat links and browser bookmarks do not change or redirect automatically. Users obtain the new URL through a later `DDDvis` request or status inquiry; this workflow does not add email, chat push or bookmark synchronization.
+When the service address changes, verify the new entry before delivery. Existing bookmarks do not update automatically; later DDDvis requests read the current address from the service record.
 
-## Shared recovery service contract
+## Background service and migration
 
-Setup records this contract but does not install, enable or repair the runtime. A separately configured recovery program must run independently of Codex, stdin and an open terminal, and write durable checks, actions, current-entry and terminal-status records. Codex observes those records read-only; the recovery program has narrowly scoped control over only this website's HTTP service and Tunnel.
+Setup records the binding, requirements and actual capabilities. It does not install, enable, repair or stop runtime services. A separately provisioned portal runs independently of Codex and an open terminal, and writes durable progress and terminal-status records. Codex observes these records read-only.
 
-- Check every 60 seconds; require 3 consecutive abnormal results before recovery.
-- Distinguish the local HTTP service from tunnel/public-entry faults. Restore the affected component; recreate a Quick Tunnel only when the tunnel cannot otherwise recover. A normal authentication challenge is not an outage, and bypassed authentication is not healthy.
-- Attempt at most 2 repairs per round. If still unsuccessful, wait 600 seconds before checking again. Network/provider outages enter this waiting path without changing system networking, firewall rules or unrelated services.
-- Preserve report contents, paths, registry and password. Update the single current-entry record after the new authenticated entry is verified; project bindings do not need hostname rewrites.
-- Persist manual stop intent. Background checks, cooldown completion and machine restarts do not undo it; only an explicit resume does. The service's documented stop/resume operations must maintain this intent.
+- Scope configured recovery to this portal's HTTP service. Use the service's documented check interval, retry limit and cooldown; preserve its reports, registry, paths and credentials. Report missing recovery capability accurately.
+- Persist manual stop intent across background checks and machine restarts. Only an explicit resume clears that intent through the documented service controls.
+- For an authorized migration from a public tunnel, retain the existing service until the LAN portal and migrated reports pass acceptance. Then retire the old tunnel and its public-recovery service so they cannot recreate public entries. Preserve report identities and contents throughout the migration.
 
-Keep recovery capability/status distinct from publishing capability. If the bound service lacks a watchdog or current-entry record, report that gap; neither process restart settings nor this document prove automatic recovery. Server-side public checks also do not prove reachability from the user's own network.
+Record requested capability changes or migration as pending until implemented and verified. Writing this contract does not establish service availability or automatic recovery.

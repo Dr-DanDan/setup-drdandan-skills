@@ -16,7 +16,7 @@ issue tracking, triage labels, domain documentation, and `TODO.md`.
 - A root `TODO.md` ledger for task priority and progress.
 - Experiment directory selection, file placement, logs, and figure provenance.
 - Feishu ticket-transfer conventions and an initially unbound mother-document configuration for the paired `lark-push-tickets` / `lark-pull-tickets` skills.
-- Optional `DDDvis` project skill and binding to an existing shared HTML preview service.
+- Optional `DDDvis` project skill and binding to a shared LAN report portal.
 
 Before experiment development, execution, debugging, or reorganization, the
 generated guidance asks whether to create a directory or reuse an existing one
@@ -50,18 +50,26 @@ AGENTS entry and `docs/agents/dddvis.md`. Only an explicit `DDDvis` request
 publishes a report; ordinary HTML generation and `visualize` keep their own
 delivery paths. Rerunning setup preserves the binding and user edits.
 
-Projects share an existing server while retaining their own report grouping.
-The binding points to stable service configuration; the current URL comes from
-service-owned state, so temporary hostnames are not copied into repository rules.
-Reports can be self-contained HTML or static resource bundles, with original
-artifacts retained and updates keeping their report paths.
+New bindings default to a password-protected LAN portal organized by project
+and report group. Existing confirmed access choices are preserved. The binding
+points to stable service configuration; deployment addresses and ports come from
+service-owned records, while report sources and entry files belong to each
+project. The templates contain no deployment-specific values or domain-specific
+report names.
 
-The included service contract covers independent, bounded recovery: 60-second
-checks, three consecutive failures, at most two repairs, then a 600-second
-cooldown, with manual stops respected. **This repository supplies setup guidance
-and a project skill template, not a web server, tunnel or recovery daemon.**
-Setup reports unsupported service capabilities; it does not install them. Old
-bookmarks and chat links do not automatically follow a recreated temporary URL.
+Reports are explicitly published display copies: later source changes do not
+update them until DDDvis is invoked again. They can be self-contained HTML or
+complete static directories, including required resources and downloads. Source
+artifacts are retained, updates keep report paths, and the portal's password
+protection covers reports and their resources.
+
+Background operation preserves manual stop intent and uses the service's own
+documented recovery limits. For an authorized migration, retire the old public
+tunnel and its recovery service only after the LAN portal and reports pass
+acceptance. **This repository supplies setup guidance and a project skill
+template, not a web server or recovery daemon.** Setup records unsupported
+capabilities or migration as pending; it does not deploy them. Existing bookmarks
+do not automatically follow an address change.
 
 ## Install
 
